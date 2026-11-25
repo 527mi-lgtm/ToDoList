@@ -57,6 +57,22 @@ h1{margin:0;font-size:26px;line-height:1.2;letter-spacing:-.02em;font-weight:700
 .bar i{display:block;height:100%;width:0;background:var(--acc);border-radius:2px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
 .prog span{font-size:12.5px;color:var(--sub);white-space:nowrap;font-variant-numeric:tabular-nums}
 
+/* install */
+.inst{display:flex;align-items:center;gap:10px;margin-top:12px;padding:8px 4px 8px 10px;border:1px solid light-dark(#cdeee5,#1f3a34);background:var(--mint);border-radius:var(--rp)}
+.inst .ico{flex:none;width:34px;height:34px;border-radius:9px;background:var(--acc);display:grid;place-items:center}
+.inst .ico svg{width:18px;height:18px;stroke:var(--acci);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.it{flex:1;display:flex;flex-direction:column;line-height:1.35}
+.it b{font-size:13.5px;font-weight:700}
+.it span{font-size:12px;color:var(--sub)}
+.btn.sm{height:34px;padding:0 14px;flex:none}
+.ix{flex:none;width:36px;height:36px;border:0;background:none;color:var(--mute);font-size:18px;border-radius:var(--r)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:var(--r);font-size:14.5px;line-height:1.5}
+.steps .n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accs);color:var(--acct);display:grid;place-items:center;font-size:12.5px;font-weight:700}
+.steps svg{width:18px;height:18px;vertical-align:-3px;fill:none;stroke:var(--acct);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.steps small{display:block;color:var(--sub);font-size:12.5px;margin-top:2px}
+.iwarn{margin:12px 0 0;padding:10px 12px;border-radius:var(--r);background:var(--ambs);color:var(--amb);font-size:13px;line-height:1.5}
+
 /* week strip */
 .wkh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px}
 .wkh>span{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
@@ -227,6 +243,12 @@ dialog.ask{max-width:320px;margin:auto;border:1px solid var(--line);border-radiu
     <div class="prog"><div class="bar"><i id="bar"></i></div><span id="progTxt"></span></div>
   </header>
   <div class="search" id="sWrap" hidden><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg><input type="search" id="q" placeholder="할 일 검색" autocomplete="off"></div>
+  <div class="inst" id="instBar" hidden>
+    <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+    <div class="it"><b>홈 화면에 설치</b><span>설치하면 인터넷 없이도 열립니다</span></div>
+    <button type="button" class="btn pri sm" id="instBtn">설치</button>
+    <button type="button" class="ix" id="instX" aria-label="설치 안내 닫기">×</button>
+  </div>
   <div class="wkh"><span id="wkLbl"></span><div class="wkn">
     <button class="tb" id="wkToday" type="button" hidden>이번 주</button>
     <button class="ib sm" id="wkPrev" type="button" aria-label="이전 주"><svg class="i" viewBox="0 0 24 24"><path d="M14.5 6l-6 6 6 6"/></svg></button>
@@ -271,6 +293,23 @@ dialog.ask{max-width:320px;margin:auto;border:1px solid var(--line);border-radiu
 
 <dialog id="ask" class="ask" aria-label="확인"><p id="askMsg"></p><div class="askb"><button type="button" class="btn" id="askNo">취소</button><button type="button" class="btn pri" id="askYes">확인</button></div></dialog>
 
+<dialog id="inst" aria-label="설치 방법">
+  <div class="grab"></div>
+  <div class="sh"><h2>홈 화면에 설치</h2><button type="button" class="btn" id="instDone">닫기</button></div>
+  <ol class="steps" id="instIOS">
+    <li><span class="n">1</span><div>Safari의 <b>공유</b> 버튼 <svg viewBox="0 0 24 24"><path d="M12 15V3.5M7.5 8L12 3.5 16.5 8M6 11H5v9.5h14V11h-1"/></svg>을 누릅니다<small>안 보이면 주소창 옆 ⋯ 를 먼저 누르세요</small></div></li>
+    <li><span class="n">2</span><div>목록에서 <b>홈 화면에 추가</b>를 누릅니다</div></li>
+    <li><span class="n">3</span><div>오른쪽 위 <b>추가</b>를 누르면 민트색 아이콘이 생깁니다</div></li>
+  </ol>
+  <ol class="steps" id="instOther">
+    <li><span class="n">1</span><div>브라우저 오른쪽 위 메뉴 <b>⋮</b>를 엽니다</div></li>
+    <li><span class="n">2</span><div><b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 누릅니다</div></li>
+    <li><span class="n">3</span><div><b>설치</b>를 누르면 민트색 아이콘이 생깁니다</div></li>
+  </ol>
+  <p class="iwarn" id="instWarn">아이폰에서는 Safari로 설치해야 오프라인 실행과 저장이 안정적입니다. 주소를 복사해 Safari에서 열어 주세요.</p>
+  <button type="button" class="btn" id="copyUrl" style="width:100%;height:44px;margin-top:10px">주소 복사</button>
+</dialog>
+
 <dialog id="set" aria-label="설정">
   <div class="grab"></div>
   <div class="sh"><h2>설정</h2><button type="button" class="btn" id="setDone">닫기</button></div>
@@ -283,7 +322,8 @@ dialog.ask{max-width:320px;margin:auto;border:1px solid var(--line);border-radiu
     </div>
     <p id="storeInfo">데이터는 이 기기에만 저장됩니다. 기기를 바꾸기 전에 백업해 두세요.</p>
   </div>
-  <div class="sec"><h3>정보</h3><div class="box"><div><span>항목</span><span id="stat" style="color:var(--sub)"></span></div><div><span>버전</span><span style="color:var(--sub)">5.0</span></div></div></div>
+  <div class="sec" id="instSec"><h3>앱</h3><div class="box"><button type="button" class="act" id="instRow">홈 화면에 설치</button></div></div>
+  <div class="sec"><h3>정보</h3><div class="box"><div><span>항목</span><span id="stat" style="color:var(--sub)"></span></div><div><span>버전</span><span style="color:var(--sub)">6.0</span></div></div></div>
 </dialog>
 
 <script>
@@ -614,6 +654,41 @@ $('#importFile').addEventListener('change',async e=>{
     save();renderSet();toast('백업을 불러왔습니다');
   }catch(err){toast('올바른 백업 파일이 아닙니다');}
 });
+
+/* install */
+let deferredPrompt=null;
+const UA=navigator.userAgent;
+const isIOS=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isIOSOther=isIOS&&/CriOS|FxiOS|EdgiOS|KAKAOTALK|NAVER|Instagram|FBAN/.test(UA);
+const isStandalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+function updInstall(){
+  const inst=isStandalone();let hide=false;
+  try{hide=!!localStorage.getItem('todo.instHide')}catch(e){}
+  $('#instBar').hidden=inst||hide;
+  $('#instSec').hidden=inst;
+}
+async function doInstall(){
+  if(deferredPrompt){
+    const p=deferredPrompt;deferredPrompt=null;
+    try{p.prompt();const r=await p.userChoice;if(r&&r.outcome==='dismissed')toast('설치를 취소했습니다');}catch(e){}
+    updInstall();return;
+  }
+  $('#instIOS').hidden=!isIOS;$('#instOther').hidden=isIOS;
+  $('#instWarn').hidden=!isIOSOther;$('#copyUrl').hidden=!isIOSOther;
+  if(ST.open)ST.close();
+  $('#inst').showModal();
+}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;updInstall();});
+addEventListener('appinstalled',()=>{deferredPrompt=null;try{localStorage.setItem('todo.instHide','1')}catch(e){}updInstall();toast('홈 화면에 설치했습니다');});
+$('#instBtn').addEventListener('click',doInstall);
+$('#instRow').addEventListener('click',doInstall);
+$('#instX').addEventListener('click',()=>{try{localStorage.setItem('todo.instHide','1')}catch(e){}updInstall();toast('설정에서 언제든 설치할 수 있습니다');});
+$('#instDone').addEventListener('click',()=>$('#inst').close());
+$('#inst').addEventListener('click',e=>{if(e.target===$('#inst'))$('#inst').close();});
+$('#copyUrl').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(location.href.split('#')[0]);toast('주소를 복사했습니다');}catch(e){toast('복사할 수 없습니다');}
+});
+updInstall();
 
 addEventListener('online',render);addEventListener('offline',render);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!editId)render();});
