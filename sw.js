@@ -1,5 +1,5 @@
 // 오프라인용 서비스 워커: 캐시에서 먼저 열고, 온라인이면 뒤에서 새 버전을 받아둡니다.
-const CACHE = 'todo-v6';
+const CACHE = 'todo-v7';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-maskable.png', './fonts/GmarketSansMedium.woff2'];
 
 self.addEventListener('install', e => {
